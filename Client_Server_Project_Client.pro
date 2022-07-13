@@ -9,20 +9,27 @@ CONFIG += c++17
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    changeamountwindow.cpp \
     clientsocket.cpp \
     crc16.cpp \
     decryptor.cpp \
     encryptor.cpp \
+    groupmodelwindow.cpp \
+    groupswindow.cpp \
     main.cpp \
     mainwindow.cpp \
     packetutil.cpp \
     productmodelwindow.cpp
 
 HEADERS += \
+    changeamountwindow.h \
     clientsocket.h \
     crc16.h \
     decryptor.h \
     encryptor.h \
+    group.h \
+    groupmodelwindow.h \
+    groupswindow.h \
     mainwindow.h \
     packet.h \
     packetutil.h \
@@ -30,6 +37,9 @@ HEADERS += \
     productmodelwindow.h
 
 FORMS += \
+    changeamountwindow.ui \
+    groupmodelwindow.ui \
+    groupswindow.ui \
     mainwindow.ui \
     productmodelwindow.ui
 

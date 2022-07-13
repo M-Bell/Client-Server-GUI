@@ -29,6 +29,8 @@ private:
   void createProduct(QByteArray json);
   void updateProduct(QByteArray json);
   void deleteProduct(QByteArray json);
+
+  void init();
 };
 
 #endif // PRODUCTMODELWINDOW_H

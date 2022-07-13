@@ -35,6 +35,8 @@ private slots:
 
   void on_delete_product_button_clicked();
 
+  void on_groups_menu_button_clicked();
+
 private:
   ClientSocket *_socket;
   Ui::MainWindow *ui;
@@ -42,5 +44,5 @@ private:
   void reset();
   Product *getCurrentProduct();
   static long PACKETS_SENT;
-  static char ID;
+  const static char ID;
 };

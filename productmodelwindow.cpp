@@ -1,4 +1,5 @@
 #include "productmodelwindow.h"
+#include "group.h"
 #include "packetutil.h"
 #include "ui_addproductwindow.h"
 #include <QJsonDocument>
@@ -10,6 +11,10 @@ ProductModelWindow::ProductModelWindow(ClientSocket *socket,
     : QDialog(parent), ui(new Ui::AddProductWindow), _socket(socket),
       _updatedProduct(product), _commandCode(commandCode) {
   ui->setupUi(this);
+  init();
+}
+
+void ProductModelWindow::init() {
   if (_updatedProduct) {
     ui->product_name->setText(_updatedProduct->name);
     ui->product_amount->setText(QString::number(_updatedProduct->amount));
@@ -18,9 +23,33 @@ ProductModelWindow::ProductModelWindow(ClientSocket *socket,
     ui->product_manufacturer->setText(_updatedProduct->manufacturer);
     ui->product_price->setText(QString::number(_updatedProduct->price));
   }
+  int len = 0;
+  QByteArray message("0+ +0");
+  QByteArray data = PacketUtil::generatePacket(0, 0, 9, 0, message, len);
+  Packet pack = PacketUtil::receivePacket(_socket->sendData(data, len));
+  QStringList allData = QString(pack.message).split('\n');
+  Group newGroup;
+  for (int i = 0; i < allData.length(); ++i) {
+    QJsonDocument temp = QJsonDocument::fromJson(allData.at(i).toUtf8());
+    QJsonObject obj = temp.object();
+    QStringList keys = obj.keys();
+    if (keys.length() < 3)
+      continue;
+    for (int j = 0; j < keys.length(); ++j) {
+      if (keys[j] == "Description") {
+        newGroup.description = obj.value(keys[j]).toString();
+        continue;
+      }
+      if (keys[j] == "ID") {
+        newGroup.id = obj.value(keys[j]).toInt();
+        continue;
+      }
 
-  if (commandCode == 3) {
-    on_buttonBox_accepted();
+      if (keys[j] == "Name") {
+        newGroup.name = obj.value(keys[j]).toString();
+        continue;
+      }
+    }
   }
 }
 

@@ -1,5 +1,6 @@
 #include "mainwindow.h"
 #include "clientsocket.h"
+#include "groupswindow.h"
 #include "packetutil.h"
 #include "product.h"
 #include "productmodelwindow.h"
@@ -9,7 +10,7 @@
 
 long MainWindow::PACKETS_SENT = 0;
 
-char MainWindow::ID = 69;
+const char MainWindow::ID = 69;
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent), _socket(new ClientSocket(this)),
@@ -154,4 +155,11 @@ Product *MainWindow::getCurrentProduct() {
   } else {
     return nullptr;
   }
+}
+
+void MainWindow::on_groups_menu_button_clicked() {
+  GroupsWindow win(_socket, this);
+  win.exec();
+  win.show();
+  reset();
 }
